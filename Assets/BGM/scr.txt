@@ -1,0 +1,58 @@
+using System.Collections;
+
+using System.Collections.Generic;
+
+using UnityEngine;
+
+
+
+public class musicScr : MonoBehaviour {
+
+    [SerializeField]AudioClip[] otherClip;
+    AudioSource audioSource;
+    int Rand;
+
+public static BGMScript instance;
+
+    
+
+    
+
+    void Awake()
+    {
+
+        // If no Player ever existed, we are it.
+        if (instance == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            instance = this;
+        }
+        // If one already exist, it's because it came from another level.
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
+        audioSource = GetComponent<AudioSource>();
+        Rand = Random.RandomRange(0, otherClip.Length);
+        audioSource.clip = otherClip[Rand];
+
+    }
+
+    // Update is called once per frame
+    void Update () {
+
+        if (!audioSource.isPlaying)
+        {
+            Rand = Random.RandomRange(0, otherClip.Length);
+            audioSource.clip = otherClip[Rand];
+            audioSource.Play();
+        }
+
+    }
+
+}
